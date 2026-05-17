@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IonQ 2026 年度研究與市場分析報告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;400;700&display=swap');
+        
+        :root {
+            --bg-grid: #f2f2f2;
+            --teal-primary: #b8d8be;
+            --pink-accent: #e91e63;
+            --yellow-marker: #fff200;
+            --charcoal: #2d2926;
+        }
+
+        body {
+            background-color: var(--bg-grid);
+            background-image: 
+                linear-gradient(var(--teal-primary) 1px, transparent 1px),
+                linear-gradient(90deg, var(--teal-primary) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-opacity: 0.1;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: var(--charcoal);
+            padding: 2rem;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .lab-card {
+            background: white;
+            border: 2px solid var(--charcoal);
+            box-shadow: 5px 5px 0px var(--charcoal);
+            padding: 1.5rem;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .lab-card::before {
+            content: attr(data-coord);
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: var(--charcoal);
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            font-family: 'JetBrains Mono';
+        }
+
+        .highlight-yellow {
+            background: linear-gradient(120deg, var(--yellow-marker) 0%, var(--yellow-marker) 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 0.4em;
+            background-position: 0 88%;
+        }
+
+        .badge-pink {
+            background-color: var(--pink-accent);
+            color: white;
+            padding: 2px 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            line-height: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            border: 1px solid var(--charcoal);
+            padding: 8px;
+            text-align: left;
+        }
+
+        th { background-color: var(--teal-primary); }
+
+        .faded-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+            background-image: radial-gradient(circle, var(--charcoal) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="max-w-5xl mx-auto">
+    <div class="faded-grid"></div>
+
+    <header class="mb-12 border-b-4 border-charcoal pb-4">
+        <div class="flex justify-between items-end">
+            <div>
+                <span class="mono text-xs opacity-60">REF: IONQ-ARXIV-MAY2026</span>
+                <h1 class="text-5xl font-bold tracking-tighter mb-2">IonQ: 2026 量子運算預研與市場分析</h1>
+                <p class="text-xl opacity-80">從學術模擬到 <span class="badge-pink">$130M</span> 全球營收的跨越點</p>
+            </div>
+            <div class="text-right mono text-sm">
+                <p>PREPARED FOR: BIBOBI</p>
+                <p>TIMESTAMP: 2026.05.16_09:20</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- SEC-01 技術突破 -->
+        <section class="md:col-span-2">
+            <div class="lab-card" data-coord="MOD-A1: RESEARCH">
+                <h2 class="text-2xl font-bold mb-4 border-b-2 border-charcoal pb-2">
+                    <i class="fas fa-atom mr-2"></i>核心技術進展
+                </h2>
+                <div class="grid grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-lg mb-2 highlight-yellow">Q-IRIS 統一架構</h3>
+                        <p class="text-sm mb-2 text-gray-700">首個將量子 QIR 核心視為與 CPU/GPU 同級的調度系統，支援記憶體映射讀取。</p>
+                        <div class="metric-value mono">83<span class="text-lg">x</span></div>
+                        <p class="text-xs font-bold opacity-60 uppercase">Performance Uplift</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2 highlight-yellow">3D QLBM 流體力學</h3>
+                        <p class="text-sm mb-2 text-gray-700">全球首例在離子阱硬體實現 3D 複雜流場（D3Q7）模擬，展示航太工業應用潛力。</p>
+                        <div class="metric-value mono">>88<span class="text-lg">%</span></div>
+                        <p class="text-xs font-bold opacity-60 uppercase">Fidelity Level</p>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-gray-100 border-l-4 border-teal-primary italic text-sm">
+                    "Shadow-MPS 讀取技術突破了讀取瓶頸，成功將網格取樣複雜度從「指數級」壓縮至「對數級」。"
+                </div>
+            </div>
+        </section>
+
+        <!-- SEC-02 財務與增長 -->
+        <section>
+            <div class="lab-card" data-coord="MOD-B1: FINANCIALS">
+                <h2 class="text-2xl font-bold mb-4 border-b-2 border-charcoal pb-2">
+                    <i class="fas fa-chart-line mr-2"></i>商業獲利
+                </h2>
+                <div class="mb-4">
+                    <p class="text-xs font-bold opacity-60 uppercase">FY2025 Revenue</p>
+                    <div class="text-4xl font-black text-pink-600 mono">$130M</div>
+                    <p class="text-sm text-gray-600 mt-1">首家達成此營收水準的純量子硬體廠商。</p>
+                </div>
+                <div>
+                    <p class="text-xs font-bold opacity-60 uppercase">Year-over-Year Growth</p>
+                    <div class="text-4xl font-black mono">+202%</div>
+                    <p class="text-sm text-gray-600 mt-1">營收增長速度遠超預期。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEC-03 競爭矩陣 -->
+        <section class="md:col-span-3">
+            <div class="lab-card" data-coord="MOD-C1: BENCHMARK">
+                <h2 class="text-2xl font-bold mb-4 border-b-2 border-charcoal pb-2">
+                    <i class="fas fa-microchip mr-2"></i>2026 量子巨頭對抗矩陣
+                </h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>維度</th>
+                            <th>IonQ (離子阱)</th>
+                            <th>Quantinuum (離子阱)</th>
+                            <th>IBM (超導)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-bold bg-gray-50">核心技術指標</td>
+                            <td>AQ 64+ (Barium)</td>
+                            <td>48 邏輯位元</td>
+                            <td>1000+ 物理位元</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold bg-gray-50">保真度閘 (Fidelity)</td>
+                            <td>~99.9% (高連通性)</td>
+                            <td class="text-pink-600 font-bold">99.97% (業界最高)</td>
+                            <td>99.5% (LDPC 糾錯)</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold bg-gray-50">最新里程碑</td>
+                            <td>首度達成 3D CFD 模擬</td>
+                            <td>Helios 處理器 IPO 籌備</td>
+                            <td>Heron & Condor 雲端規模</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold bg-gray-50">主要垂直領域</td>
+                            <td>航太、化學與量子 ML</td>
+                            <td>密碼學與金融建模</td>
+                            <td>全產業通用雲平台</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SEC-04 投資亮點 -->
+        <section class="md:col-span-1">
+            <div class="lab-card" data-coord="MOD-D1: HIGHLIGHTS">
+                <h2 class="text-xl font-bold mb-4 highlight-yellow">投資觀察亮點</h2>
+                <ul class="space-y-3 text-sm">
+                    <li><i class="fas fa-check-circle text-teal-600 mr-2"></i><strong>鋇離子轉型</strong>: Tempo 產品線提升速度，支援光學互連。</li>
+                    <li><i class="fas fa-check-circle text-teal-600 mr-2"></i><strong>垂直整合優勢</strong>: 深度布局 QML 軟硬體，合約價值高。</li>
+                    <li><i class="fas fa-check-circle text-teal-600 mr-2"></i><strong>供應鏈成熟度</strong>: 鋇離子系統更容易大規模光學集成。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SEC-05 未來風險 -->
+        <section class="md:col-span-2">
+            <div class="lab-card" data-coord="MOD-E1: RISKS">
+                <h2 class="text-xl font-bold mb-4">未來路徑與風險控管</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-3 bg-red-50 border border-red-200">
+                        <p class="font-bold text-red-700 text-xs mb-1 uppercase">Potential Risks</p>
+                        <p class="text-xs">Quantinuum 的 $20B IPO 可能吸走大量二級市場資金；糾錯位元擴展仍需光合互連驗證。</p>
+                    </div>
+                    <div class="p-3 bg-teal-50 border border-teal-200">
+                        <p class="font-bold text-teal-700 text-xs mb-1 uppercase">Next Milestone</p>
+                        <p class="text-xs">2027 年能否實現「光互連 (Optical Interconnects)」的大規模模組化連結。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="mt-12 text-center mono text-xs opacity-50">
+        <p>© 2026 HERMES AGENT REPORTING | DATA SOURCED VIA ARXIV & MARKET WEB SEARCH</p>
+    </footer>
+</body>
+</html>

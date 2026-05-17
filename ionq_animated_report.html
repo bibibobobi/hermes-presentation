@@ -1,0 +1,77 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;900&display=swap');
+  :root { --bg: #f2f2f2; --teal: #b8d8be; --pink: #e91e63; --yellow: #fff200; --charcoal: #2d2926; }
+  #hf-wrap { background: var(--bg); color: var(--charcoal); font-family: 'JetBrains Mono', monospace; margin: 0; padding: 0; overflow: hidden; }
+  #canvas { width: 100%; aspect-ratio: 16/9; background-image: radial-gradient(var(--charcoal) 1px, transparent 0); background-size: 40px 40px; position: relative; display: flex; flex-direction: column; padding: 4%; box-sizing: border-box; }
+  .header { border-left: 8px solid var(--pink); padding-left: 20px; margin-bottom: 4%; }
+  h1 { font-size: clamp(24px, 4.5vw, 85px); margin: 0; letter-spacing: -1px; text-transform: uppercase; }
+  .sub { font-size: clamp(10px, 1.2vw, 24px); color: var(--pink); }
+  .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3%; flex: 1; }
+  .module { background: white; border: 2px solid var(--charcoal); padding: 4%; position: relative; opacity: 0; }
+  .module-label { position: absolute; top: -12px; left: 15px; background: var(--charcoal); color: white; padding: 2px 10px; font-size: clamp(8px, 0.9vw, 16px); }
+  .highlight { background: var(--yellow); padding: 0 4px; font-weight: bold; }
+  .mega-data { font-size: clamp(40px, 6vw, 110px); font-weight: 900; color: var(--pink); line-height: 1; }
+  .yoy { font-size: clamp(16px, 2vw, 38px); font-weight: bold; }
+  .tech-list { font-size: clamp(10px, 1.4vw, 26px); line-height: 2; padding-left: 20px; margin: 10px 0; }
+  .comparison-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .comparison-table td { border-bottom: 1px solid #ccc; padding: 8px 4px; font-size: clamp(8px, 1vw, 20px); }
+  .winner { color: var(--pink); font-weight: bold; }
+  #scanner { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--pink); opacity: 0.4; z-index: 100; }
+  #play-btn { position: absolute; bottom: 10px; right: 10px; background: var(--charcoal); color: white; border: none; padding: 6px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; z-index: 200; }
+</style>
+
+<div id="hf-wrap">
+  <div id="canvas">
+    <div id="scanner"></div>
+    <div class="header" id="main-header">
+      <div class="sub">SEC_01 // QUANTUM_INTELLIGENCE</div>
+      <h1>IonQ: 2026 量子技術版圖</h1>
+    </div>
+    <div class="grid">
+      <div class="module" id="mod-tech">
+        <div class="module-label">MOD-01 // TECHNICAL_BREAKTHROUGH</div>
+        <ul class="tech-list">
+          <li>Q-IRIS 統一架構: <span class="highlight">83x 效能提升</span></li>
+          <li>3D QLBM 模擬: 保真度 <span class="highlight">&gt;88%</span></li>
+          <li>Shadow-MPS: <span class="highlight">解鎖讀取瓶頸</span></li>
+        </ul>
+      </div>
+      <div class="module" id="mod-finance">
+        <div class="module-label">MOD-02 // REVENUE_GROWTH</div>
+        <div style="font-size: clamp(10px,1.2vw,22px)">FY2025 ANNUAL REVENUE</div>
+        <div class="mega-data" id="rev-num">$130M</div>
+        <div class="yoy">+202% YoY</div>
+      </div>
+      <div class="module" id="mod-comp" style="grid-column: span 2">
+        <div class="module-label">SEC-R // MARKET_MATRIX_2026</div>
+        <table class="comparison-table">
+          <tr><td>IONQ (離子阱)</td><td class="winner">AQ 64+ // 鋇離子轉型成功</td><td class="winner">領先垂直領域 (CFD)</td></tr>
+          <tr><td>QUANTINUUM</td><td>48 邏輯位元 // $20B IPO 目標</td><td>最高閘極保真度</td></tr>
+          <tr><td>IBM</td><td>1000+ 物理位元 // 雲端生態領先</td><td>企業開發工具標竿</td></tr>
+        </table>
+      </div>
+    </div>
+    <button id="play-btn">▶ PLAY</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  tl.fromTo("#scanner", { top: 0 }, { top: "100%", duration: 3, repeat: 4, ease: "none" }, 0);
+  tl.from("#main-header", { x: -60, opacity: 0, duration: 1, ease: "power4.out" }, 0.5);
+  tl.to("#mod-tech", { opacity: 1, duration: 1.2, ease: "expo.out" }, 2.0);
+  tl.from("#mod-tech", { x: -40 }, 2.0);
+  tl.to("#mod-finance", { opacity: 1, duration: 1.2, ease: "expo.out" }, 2.5);
+  tl.from("#mod-finance", { x: 40 }, 2.5);
+  tl.from("#rev-num", { scale: 0.5, opacity: 0, duration: 1.5, ease: "elastic.out(1, 0.3)" }, 3.5);
+  tl.to("#mod-comp", { opacity: 1, duration: 1.5, ease: "power3.out" }, 6.0);
+  tl.from("#mod-comp", { y: 60 }, 6.0);
+  tl.from(".highlight", { backgroundColor: "transparent", stagger: 0.3, duration: 0.5 }, 7.5);
+
+  document.getElementById("play-btn").addEventListener("click", function() {
+    tl.restart();
+    this.textContent = "⟳ REPLAY";
+  });
+</script>

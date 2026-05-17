@@ -1,0 +1,2449 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+    />
+    <title>今天開始當老闆，養一個自己的 AI 秘書 | Hermes Agent</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css"
+    />
+
+    <style>
+      /* =============================================
+       Variables
+    ============================================= */
+      :root {
+        --bg: #1a1a1a;
+        --pink: #e91e63;
+        --yellow: #fff200;
+        --green: #b8d8be;
+        --white: #ffffff;
+        --cb: 2px solid #000;
+        --cs: 5px 5px 0 #000;
+        --font-main: "Noto Sans TC", "PingFang TC", sans-serif;
+        --font-code: "JetBrains Mono", "Courier New", monospace;
+      }
+
+      /* =============================================
+       Viewport & Base
+    ============================================= */
+      .reveal-viewport {
+        background: var(--bg);
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.035) 1px,
+            transparent 1px
+          );
+        background-size: 40px 40px;
+      }
+
+      .reveal {
+        font-family: var(--font-main);
+        font-size: 22px;
+        color: #111;
+      }
+
+      .reveal .slides > section {
+        text-align: left;
+        padding: 34px 48px;
+        height: 100%;
+        box-sizing: border-box;
+        background: transparent;
+      }
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4 {
+        font-family: var(--font-main);
+        text-align: left;
+        text-transform: none;
+        letter-spacing: -0.01em;
+      }
+
+      /* =============================================
+       Section Tag
+    ============================================= */
+      .tag {
+        display: inline-block;
+        font-family: var(--font-code);
+        font-size: 0.5em;
+        font-weight: 700;
+        padding: 3px 10px 4px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        border: 1.5px solid #000;
+        box-shadow: 2px 2px 0 #000;
+      }
+      .tag-y {
+        background: var(--yellow);
+        color: #000;
+      }
+      .tag-p {
+        background: var(--pink);
+        color: #fff;
+      }
+      .tag-g {
+        background: var(--green);
+        color: #000;
+      }
+      .tag-d {
+        background: #333;
+        color: var(--yellow);
+      }
+
+      /* =============================================
+       Slide Title
+    ============================================= */
+      .slide-title {
+        font-size: 1.42em;
+        font-weight: 900;
+        color: var(--white);
+        margin: 0 0 16px;
+        line-height: 1.15;
+      }
+
+      /* =============================================
+       Cards
+    ============================================= */
+      .card-h {
+        font-weight: 700;
+        font-size: 0.82em;
+        margin: 0 0 8px;
+        padding-bottom: 6px;
+        border-bottom: 1.5px solid #000;
+        color: #000;
+      }
+      .card-body {
+        font-size: 0.72em;
+        color: #333;
+        line-height: 1.65;
+      }
+
+      .card {
+        background: var(--white);
+        border: var(--cb);
+        box-shadow: var(--cs);
+        padding: 16px 18px;
+      }
+      .card-dark {
+        background: #222;
+        border: 1.5px solid #3a3a3a;
+        box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.65);
+        padding: 16px 18px;
+      }
+      .card-dark .card-h {
+        color: var(--white);
+        border-color: #444;
+      }
+      .card-dark .card-body {
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      .card-red {
+        background: #fff0f3;
+        border: 2px solid var(--pink);
+        box-shadow: 5px 5px 0 var(--pink);
+        padding: 16px 18px;
+      }
+      .card-red .card-h {
+        color: var(--pink);
+        border-color: var(--pink);
+      }
+      .card-red .card-body {
+        color: #444;
+      }
+
+      .card-accent {
+        background: var(--white);
+        border: 2px solid var(--pink);
+        box-shadow: 5px 5px 0 var(--pink);
+        padding: 16px 18px;
+      }
+      .card-accent .card-h {
+        border-color: var(--pink);
+      }
+
+      /* =============================================
+       Grid Layouts
+    ============================================= */
+      .g2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 12px;
+      }
+      .g3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+        margin-top: 12px;
+      }
+      .g23 {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 18px;
+        margin-top: 12px;
+      }
+      .g32 {
+        display: grid;
+        grid-template-columns: 1.45fr 1fr;
+        gap: 18px;
+        margin-top: 12px;
+      }
+
+      /* =============================================
+       Image Placeholder
+    ============================================= */
+      .img-ph {
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.04);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 20px;
+        color: rgba(255, 255, 255, 0.38);
+        font-family: var(--font-code);
+        font-size: 0.6em;
+        text-align: center;
+        border-radius: 3px;
+        min-height: 180px;
+        line-height: 1.5;
+      }
+      .img-ph-icon {
+        font-size: 2.2em;
+        opacity: 0.35;
+      }
+
+      /* =============================================
+       Code Block
+    ============================================= */
+      .code {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-left: 4px solid var(--pink);
+        border-radius: 3px;
+        padding: 13px 20px;
+        font-family: var(--font-code);
+        font-size: 0.72em;
+        color: #e6edf3;
+        line-height: 1.7;
+        margin: 10px 0;
+        overflow-x: auto;
+      }
+      .code.lg {
+        font-size: 0.88em;
+        padding: 17px 22px;
+        border-left-color: var(--green);
+      }
+      .code .c {
+        color: #6e7681;
+      }
+      .code .k {
+        color: #ff7b72;
+      }
+      .code .s {
+        color: #a5d6ff;
+      }
+
+      /* =============================================
+       Gold Quote
+    ============================================= */
+      .quote {
+        background: var(--yellow);
+        border: var(--cb);
+        box-shadow: var(--cs);
+        padding: 11px 18px;
+        font-weight: 700;
+        font-size: 0.7em;
+        color: #000;
+        margin-top: 14px;
+      }
+      .quote::before {
+        content: "💡 ";
+      }
+
+      /* =============================================
+       Table
+    ============================================= */
+      .reveal table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.68em;
+        margin-top: 12px;
+      }
+      .reveal table th {
+        background: #111;
+        color: var(--yellow);
+        border: 1px solid #444;
+        padding: 9px 14px;
+        font-family: var(--font-code);
+        font-weight: 700;
+        text-align: left;
+      }
+      .reveal table td {
+        background: rgba(255, 255, 255, 0.94);
+        color: #111;
+        border: 1px solid #ccc;
+        padding: 9px 14px;
+        vertical-align: top;
+        line-height: 1.5;
+      }
+      .reveal table tr:nth-child(even) td {
+        background: rgba(255, 255, 255, 0.82);
+      }
+      .reveal table tr.total td {
+        background: var(--yellow) !important;
+        font-weight: 700;
+        color: #000;
+      }
+
+      /* =============================================
+       Feature List
+    ============================================= */
+      .flist {
+        list-style: none;
+        padding: 0;
+        margin: 8px 0 0;
+      }
+      .flist li {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.72em;
+        margin-bottom: 8px;
+        padding-left: 16px;
+        position: relative;
+        line-height: 1.5;
+      }
+      .flist li::before {
+        content: "▸";
+        color: var(--pink);
+        position: absolute;
+        left: 0;
+      }
+
+      /* =============================================
+       Step List
+    ============================================= */
+      .slist {
+        list-style: none;
+        padding: 0;
+        margin: 12px 0;
+      }
+      .slist li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .snum {
+        background: var(--pink);
+        color: #fff;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-code);
+        font-weight: 700;
+        font-size: 0.7em;
+        flex-shrink: 0;
+        border: 1.5px solid #000;
+      }
+      .slist-t strong {
+        color: var(--white);
+        font-size: 0.82em;
+        display: block;
+      }
+      .slist-t span {
+        color: rgba(255, 255, 255, 0.52);
+        font-size: 0.7em;
+        display: block;
+        margin-top: 3px;
+      }
+
+      /* =============================================
+       Badge
+    ============================================= */
+      .badge {
+        display: inline-block;
+        background: #252525;
+        border: 1px solid #3a3a3a;
+        color: var(--green);
+        font-family: var(--font-code);
+        font-size: 0.58em;
+        padding: 3px 9px;
+        border-radius: 2px;
+        margin: 2px;
+      }
+
+      /* =============================================
+       QR Placeholder
+    ============================================= */
+      .qr-ph {
+        width: 110px;
+        height: 110px;
+        border: 2px dashed rgba(255, 255, 255, 0.22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        color: rgba(255, 255, 255, 0.32);
+        font-family: var(--font-code);
+        font-size: 0.52em;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      /* =============================================
+       Cover Slide – Scanline
+    ============================================= */
+      @keyframes scanline {
+        0% {
+          top: -4px;
+        }
+        100% {
+          top: 100%;
+        }
+      }
+      .scanline-wrap {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .scanline-line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 255, 255, 0.07),
+          transparent
+        );
+        animation: scanline 5s linear infinite;
+      }
+      .cover-bar {
+        width: 68px;
+        height: 4px;
+        background: var(--pink);
+        border: 1.5px solid #000;
+        margin: 12px 0 18px;
+      }
+      .cover-title {
+        font-size: 1.82em;
+        font-weight: 900;
+        color: var(--white);
+        line-height: 1.18;
+        margin: 0 0 10px;
+      }
+      .cover-title em {
+        color: var(--yellow);
+        font-style: normal;
+      }
+      .cover-sub {
+        font-size: 0.82em;
+        color: rgba(255, 255, 255, 0.62);
+        margin-bottom: 24px;
+        line-height: 1.5;
+      }
+      .cover-author {
+        font-family: var(--font-code);
+        font-size: 0.66em;
+        color: rgba(255, 255, 255, 0.48);
+      }
+      .cover-ver {
+        position: absolute;
+        bottom: 14px;
+        right: 0;
+        font-family: var(--font-code);
+        font-size: 0.54em;
+        color: rgba(255, 255, 255, 0.26);
+      }
+
+      /* =============================================
+       Slide Number & Controls
+    ============================================= */
+      .reveal .slide-number {
+        font-family: var(--font-code);
+        font-size: 0.5em;
+        background: rgba(0, 0, 0, 0.55);
+        color: rgba(255, 255, 255, 0.38);
+        bottom: 12px;
+        right: 14px;
+        padding: 3px 8px;
+        border-radius: 2px;
+      }
+      .reveal .progress {
+        height: 3px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .reveal .progress span {
+        background: var(--pink);
+      }
+      .reveal .controls {
+        color: var(--pink);
+      }
+
+      /* =============================================
+       Utility
+    ============================================= */
+      .cp {
+        color: var(--pink);
+      }
+      .cy {
+        color: var(--yellow);
+      }
+      .cg {
+        color: var(--green);
+      }
+      .cw {
+        color: var(--white);
+      }
+      .cm {
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .fw7 {
+        font-weight: 700;
+      }
+      .fw9 {
+        font-weight: 900;
+      }
+      .mono {
+        font-family: var(--font-code);
+      }
+      .mt8 {
+        margin-top: 8px;
+      }
+      .mt12 {
+        margin-top: 12px;
+      }
+      .mt16 {
+        margin-top: 16px;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .center-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+      }
+
+      /* Lightbox */
+      .lb-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-out;
+      }
+      .lb-overlay.active {
+        display: flex;
+      }
+      .lb-overlay img {
+        max-width: 92vw;
+        max-height: 92vh;
+        object-fit: contain;
+        border-radius: 4px;
+        box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
+        cursor: default;
+      }
+      .reveal img {
+        cursor: zoom-in;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- ══════════════════════════════════════════════════
+     Slide 01 · Cover
+══════════════════════════════════════════════════ -->
+        <section data-transition="fade">
+          <div class="scanline-wrap"><div class="scanline-line"></div></div>
+          <div
+            style="
+              position: relative;
+              z-index: 1;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            "
+          >
+            <div><span class="tag tag-y">Hermes Agent · 2026</span></div>
+            <div class="cover-bar"></div>
+            <div class="cover-title">
+              今天開始當老闆，<br />養一個自己的 <em>AI 秘書</em>
+            </div>
+            <div class="cover-sub">
+              Hermes Agent 實戰：從安裝到 24 小時自我成長
+            </div>
+            <div class="cover-ver">v0.13.0 &nbsp;·&nbsp; 2026.05</div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 02 · AI Agent Landscape
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">LANDSCAPE</span>
+          <div class="slide-title">你的 AI 助理在哪裡跑？</div>
+          <div class="g3">
+            <div class="card">
+              <div class="card-h">OpenClaw</div>
+              <div class="card-body">
+                Gateway-first，多頻道路由，生態最成熟。<br />
+                可搭配 OpenRouter Spawn 部署到 VPS。<br /><br />
+                <span class="cp fw7">定位：多頻道 Orchestrator</span>
+              </div>
+            </div>
+            <div class="card-accent">
+              <div class="card-h" style="border-color: var(--pink)">
+                Hermes ⚡
+              </div>
+              <div class="card-body">
+                Agent-first，自我學習，住在<strong>雲端</strong> 24
+                小時進化。<br />
+                記憶、排程、技能持續累積。<br /><br />
+                <span class="cp fw7">定位：你的進化型員工</span>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-h">Claude Cowork / Codex Mobile</div>
+              <div class="card-body">
+                閉源陣營，企業或遙控器定位。功能受限，客製化空間小。<br /><br />
+                <span class="cp fw7">定位：遙控器</span>
+              </div>
+            </div>
+          </div>
+          <div class="quote">
+            「不是誰取代誰，是各司其職——OpenClaw 接訊息，Hermes 做事情」
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 03 · What is Hermes
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">OVERVIEW</span>
+          <div class="slide-title">Hermes Agent 是什麼？</div>
+          <svg
+            viewBox="0 0 1184 540"
+            xmlns="http://www.w3.org/2000/svg"
+            style="width: 100%; display: block; margin-top: 8px"
+          >
+            <!-- label -->
+            <text
+              x="12"
+              y="14"
+              font-size="12"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,255,255,0.22)"
+            >
+              Hermes Agent 個人 AI 秘書系統
+            </text>
+
+            <!-- ── LINES ── -->
+            <!-- 你→Hermes solid -->
+            <line
+              x1="589"
+              y1="84"
+              x2="591"
+              y2="238"
+              stroke="rgba(255,255,255,0.45)"
+              stroke-width="1.5"
+            />
+            <!-- 你→Dashboard -->
+            <line
+              x1="530"
+              y1="84"
+              x2="190"
+              y2="122"
+              stroke="rgba(255,255,255,0.45)"
+              stroke-width="1.5"
+            />
+            <!-- 你→CronJob -->
+            <line
+              x1="648"
+              y1="84"
+              x2="988"
+              y2="122"
+              stroke="rgba(255,255,255,0.45)"
+              stroke-width="1.5"
+            />
+            <!-- Dashboard→Hermes dashed -->
+            <line
+              x1="190"
+              y1="198"
+              x2="510"
+              y2="238"
+              stroke="rgba(255,255,255,0.18)"
+              stroke-width="1"
+              stroke-dasharray="6,4"
+            />
+            <!-- CronJob→Hermes dashed -->
+            <line
+              x1="988"
+              y1="198"
+              x2="672"
+              y2="238"
+              stroke="rgba(255,255,255,0.18)"
+              stroke-width="1"
+              stroke-dasharray="6,4"
+            />
+            <!-- Hermes→LLM大腦 dashed -->
+            <line
+              x1="510"
+              y1="322"
+              x2="297"
+              y2="342"
+              stroke="rgba(255,255,255,0.18)"
+              stroke-width="1"
+              stroke-dasharray="6,4"
+            />
+            <!-- Hermes→Skills dashed -->
+            <line
+              x1="672"
+              y1="322"
+              x2="881"
+              y2="342"
+              stroke="rgba(255,255,255,0.18)"
+              stroke-width="1"
+              stroke-dasharray="6,4"
+            />
+            <!-- Hermes→Persist faint dashed -->
+            <line
+              x1="591"
+              y1="322"
+              x2="588"
+              y2="454"
+              stroke="rgba(255,255,255,0.09)"
+              stroke-width="1"
+              stroke-dasharray="3,7"
+            />
+            <!-- LLM大腦→LLM Wiki -->
+            <line
+              x1="192"
+              y1="434"
+              x2="190"
+              y2="454"
+              stroke="rgba(255,255,255,0.35)"
+              stroke-width="1.5"
+            />
+            <!-- Skills→Claude -->
+            <line
+              x1="986"
+              y1="434"
+              x2="988"
+              y2="454"
+              stroke="rgba(255,255,255,0.35)"
+              stroke-width="1.5"
+            />
+            <!-- LLM Wiki→Persist horizontal -->
+            <line
+              x1="288"
+              y1="490"
+              x2="470"
+              y2="490"
+              stroke="rgba(255,255,255,0.35)"
+              stroke-width="1.5"
+            />
+            <!-- Claude→Persist horizontal -->
+            <line
+              x1="890"
+              y1="490"
+              x2="706"
+              y2="490"
+              stroke="rgba(255,255,255,0.35)"
+              stroke-width="1.5"
+            />
+
+            <!-- ── NODES ── -->
+
+            <!-- 你（老闆） shadow + box -->
+            <rect x="485" y="19" width="218" height="70" rx="2" fill="#000" />
+            <rect
+              x="480"
+              y="14"
+              width="218"
+              height="70"
+              rx="2"
+              fill="#fff200"
+              stroke="#000"
+              stroke-width="2"
+            />
+            <text
+              x="589"
+              y="46"
+              text-anchor="middle"
+              font-size="20"
+              font-weight="900"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#000"
+            >
+              我（老闆）
+            </text>
+            <text
+              x="589"
+              y="66"
+              text-anchor="middle"
+              font-size="12"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(0,0,0,0.5)"
+            >
+              Discord · CLI
+            </text>
+
+            <!-- Dashboard shadow + box -->
+            <rect x="97" y="127" width="196" height="76" rx="2" fill="#000" />
+            <rect
+              x="92"
+              y="122"
+              width="196"
+              height="76"
+              rx="2"
+              fill="#162035"
+              stroke="#2a4875"
+              stroke-width="1.5"
+            />
+            <text
+              x="190"
+              y="154"
+              text-anchor="middle"
+              font-size="16"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              Dashboard
+            </text>
+            <text
+              x="190"
+              y="174"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(160,190,240,0.6)"
+            >
+              分派 · 控管 · Kanban
+            </text>
+
+            <!-- Cron Job shadow + box -->
+            <rect x="895" y="127" width="196" height="76" rx="2" fill="#000" />
+            <rect
+              x="890"
+              y="122"
+              width="196"
+              height="76"
+              rx="2"
+              fill="#162035"
+              stroke="#2a4875"
+              stroke-width="1.5"
+            />
+            <text
+              x="988"
+              y="154"
+              text-anchor="middle"
+              font-size="16"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              Cron Job
+            </text>
+            <text
+              x="988"
+              y="174"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(160,190,240,0.6)"
+            >
+              股票報告 · 日文推播
+            </text>
+
+            <!-- Hermes shadow + box -->
+            <rect x="468" y="243" width="256" height="84" rx="2" fill="#000" />
+            <rect
+              x="463"
+              y="238"
+              width="256"
+              height="84"
+              rx="2"
+              fill="#e91e63"
+              stroke="#000"
+              stroke-width="2"
+            />
+            <text
+              x="591"
+              y="270"
+              text-anchor="middle"
+              font-size="21"
+              font-weight="900"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              Hermes
+            </text>
+            <text
+              x="591"
+              y="292"
+              text-anchor="middle"
+              font-size="11.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,255,255,0.82)"
+            >
+              協調者 / 執行引擎
+            </text>
+            <text
+              x="591"
+              y="310"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,255,255,0.58)"
+            >
+              記憶 · 排程 · 工具調用
+            </text>
+
+            <!-- LLM 大腦 shadow + box -->
+            <rect x="92" y="347" width="210" height="92" rx="2" fill="#000" />
+            <rect
+              x="87"
+              y="342"
+              width="210"
+              height="92"
+              rx="2"
+              fill="#1a2e08"
+              stroke="#5a8020"
+              stroke-width="1.5"
+            />
+            <text
+              x="192"
+              y="373"
+              text-anchor="middle"
+              font-size="16"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#c8e896"
+            >
+              LLM 大腦
+            </text>
+            <text
+              x="192"
+              y="393"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(190,230,130,0.6)"
+            >
+              Gemini · Sonnet · Opus
+            </text>
+            <text
+              x="192"
+              y="410"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(190,230,130,0.6)"
+            >
+              透過 OpenRouter 切換
+            </text>
+            <text
+              x="192"
+              y="426"
+              text-anchor="middle"
+              font-size="10.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(190,230,130,0.38)"
+            >
+              cheap · code · plan
+            </text>
+
+            <!-- Skills shadow + box -->
+            <rect x="886" y="347" width="210" height="92" rx="2" fill="#000" />
+            <rect
+              x="881"
+              y="342"
+              width="210"
+              height="92"
+              rx="2"
+              fill="#2e0812"
+              stroke="#8a2040"
+              stroke-width="1.5"
+            />
+            <text
+              x="986"
+              y="373"
+              text-anchor="middle"
+              font-size="15"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#e896a8"
+            >
+              Skills（持續成長）
+            </text>
+            <text
+              x="986"
+              y="393"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(225,145,165,0.6)"
+            >
+              執行任務
+            </text>
+            <text
+              x="986"
+              y="410"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(225,145,165,0.6)"
+            >
+              → 沉澱為 skill
+            </text>
+            <text
+              x="986"
+              y="426"
+              text-anchor="middle"
+              font-size="10.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(225,145,165,0.38)"
+            >
+              → 下次更快更準
+            </text>
+
+            <!-- LLM Wiki shadow + box -->
+            <rect x="97" y="459" width="196" height="72" rx="2" fill="#000" />
+            <rect
+              x="92"
+              y="454"
+              width="196"
+              height="72"
+              rx="2"
+              fill="#0e2010"
+              stroke="#205a30"
+              stroke-width="1.5"
+            />
+            <text
+              x="190"
+              y="484"
+              text-anchor="middle"
+              font-size="15"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#b8d8be"
+            >
+              LLM Wiki
+            </text>
+            <text
+              x="190"
+              y="503"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(185,220,195,0.48)"
+            >
+              知識庫 · 結構化研究成果
+            </text>
+
+            <!-- Persistent Memory shadow + box -->
+            <rect x="475" y="459" width="236" height="72" rx="2" fill="#000" />
+            <rect
+              x="470"
+              y="454"
+              width="236"
+              height="72"
+              rx="2"
+              fill="#232323"
+              stroke="#3a3a3a"
+              stroke-width="1.5"
+            />
+            <text
+              x="588"
+              y="484"
+              text-anchor="middle"
+              font-size="15"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              Persistent Memory
+            </text>
+            <text
+              x="588"
+              y="503"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,255,255,0.38)"
+            >
+              記住我 · 記住任務 · 記住成果
+            </text>
+
+            <!-- Claude Code Pro shadow + box -->
+            <rect x="895" y="459" width="196" height="72" rx="2" fill="#000" />
+            <rect
+              x="890"
+              y="454"
+              width="196"
+              height="72"
+              rx="2"
+              fill="#0e1e20"
+              stroke="#206060"
+              stroke-width="1.5"
+            />
+            <text
+              x="988"
+              y="484"
+              text-anchor="middle"
+              font-size="15"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#b8d8be"
+            >
+              Claude Code Pro
+            </text>
+            <text
+              x="988"
+              y="503"
+              text-anchor="middle"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(185,220,195,0.48)"
+            >
+              分析 raw data · 不爆預算
+            </text>
+          </svg>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 04 · 3 Ways to Install
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">INSTALL</span>
+          <div class="slide-title">3 Ways to Install Hermes</div>
+          <svg
+            viewBox="0 0 1184 358"
+            xmlns="http://www.w3.org/2000/svg"
+            style="width: 100%; display: block; margin-top: 8px"
+          >
+            <defs>
+              <marker
+                id="dl"
+                markerWidth="8"
+                markerHeight="6"
+                refX="7"
+                refY="3"
+                orient="auto"
+              >
+                <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.55)" />
+              </marker>
+              <marker
+                id="dly"
+                markerWidth="8"
+                markerHeight="6"
+                refX="7"
+                refY="3"
+                orient="auto"
+              >
+                <polygon points="0 0, 8 3, 0 6" fill="#fff200" opacity="0.85" />
+              </marker>
+            </defs>
+
+            <!-- ── CARD 1: Local (Ollama) ── -->
+            <rect x="27" y="32" width="330" height="180" rx="2" fill="#000" />
+            <rect
+              x="22"
+              y="27"
+              width="330"
+              height="180"
+              rx="2"
+              fill="#1a2e08"
+              stroke="#5a8020"
+              stroke-width="1.5"
+            />
+            <rect x="22" y="27" width="330" height="36" rx="2" fill="#2a4a10" />
+            <text
+              x="187"
+              y="50"
+              text-anchor="middle"
+              font-size="15"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#c8e896"
+            >
+              Local (Ollama)
+            </text>
+            <text
+              x="42"
+              y="81"
+              font-size="12.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(200,232,150,0.78)"
+            >
+              ▸ Ollama（本機 LLM）
+            </text>
+            <text
+              x="42"
+              y="100"
+              font-size="12.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(200,232,150,0.78)"
+            >
+              ▸ Qwen / Gemma 本地模型
+            </text>
+            <text
+              x="42"
+              y="119"
+              font-size="12.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(200,232,150,0.78)"
+            >
+              ▸ 完全在你的電腦上跑
+            </text>
+            <line
+              x1="42"
+              y1="132"
+              x2="332"
+              y2="132"
+              stroke="rgba(90,128,32,0.35)"
+              stroke-width="1"
+            />
+            <text
+              x="42"
+              y="153"
+              font-size="11.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(200,232,150,0.5)"
+            >
+              Free · Private · 較慢
+            </text>
+            <text
+              x="42"
+              y="173"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(200,232,150,0.35)"
+            >
+              需要電腦保持開著
+            </text>
+
+            <!-- ── CARD 2: Local Install (CLI) — 我的起步 ── -->
+            <rect x="429" y="5" width="70" height="20" rx="1" fill="#000" />
+            <rect
+              x="425"
+              y="1"
+              width="70"
+              height="20"
+              rx="1"
+              fill="#fff200"
+              stroke="#000"
+              stroke-width="1.5"
+            />
+            <text
+              x="460"
+              y="14"
+              text-anchor="middle"
+              font-size="9.5"
+              font-weight="700"
+              font-family="'JetBrains Mono',monospace"
+              fill="#000"
+            >
+              ★ 我的起步
+            </text>
+            <rect x="427" y="32" width="330" height="180" rx="2" fill="#000" />
+            <rect
+              x="422"
+              y="27"
+              width="330"
+              height="180"
+              rx="2"
+              fill="#1a0a0e"
+              stroke="#e91e63"
+              stroke-width="2"
+            />
+            <rect
+              x="422"
+              y="27"
+              width="330"
+              height="36"
+              rx="2"
+              fill="#e91e63"
+            />
+            <text
+              x="587"
+              y="50"
+              text-anchor="middle"
+              font-size="15"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              Local Install (LLM API)
+            </text>
+            <rect
+              x="442"
+              y="67"
+              width="290"
+              height="26"
+              rx="2"
+              fill="#0d1117"
+              stroke="#30363d"
+              stroke-width="1"
+            />
+            <text
+              x="452"
+              y="84"
+              font-size="10.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="#a5d6ff"
+            >
+              curl -fsSL ...install.sh | bash
+            </text>
+            <text
+              x="442"
+              y="112"
+              font-size="12.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,180,180,0.82)"
+            >
+              ▸ OpenAI / OpenRouter API
+            </text>
+            <text
+              x="442"
+              y="131"
+              font-size="12.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,180,180,0.82)"
+            >
+              ▸ 在本機執行，設定超簡單
+            </text>
+            <line
+              x1="442"
+              y1="144"
+              x2="732"
+              y2="144"
+              stroke="rgba(233,30,99,0.3)"
+              stroke-width="1"
+            />
+            <text
+              x="442"
+              y="164"
+              font-size="11.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,180,180,0.52)"
+            >
+              最簡單 · Fast · Uses APIs
+            </text>
+            <text
+              x="442"
+              y="184"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,180,180,0.35)"
+            >
+              適合快速上手
+            </text>
+
+            <!-- ── CARD 3: VPS — 現在用 ── -->
+            <rect x="1113" y="5" width="55" height="20" rx="1" fill="#000" />
+            <rect
+              x="1109"
+              y="1"
+              width="55"
+              height="20"
+              rx="1"
+              fill="#fff200"
+              stroke="#000"
+              stroke-width="1.5"
+            />
+            <text
+              x="1136"
+              y="14"
+              text-anchor="middle"
+              font-size="9.5"
+              font-weight="700"
+              font-family="'JetBrains Mono',monospace"
+              fill="#000"
+            >
+              ★ 預計用
+            </text>
+            <rect x="827" y="32" width="330" height="180" rx="2" fill="#000" />
+            <rect
+              x="822"
+              y="27"
+              width="330"
+              height="180"
+              rx="2"
+              fill="#162035"
+              stroke="#2a4875"
+              stroke-width="1.5"
+            />
+            <rect
+              x="822"
+              y="27"
+              width="330"
+              height="36"
+              rx="2"
+              fill="#1e3050"
+            />
+            <text
+              x="987"
+              y="50"
+              text-anchor="middle"
+              font-size="14"
+              font-weight="700"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              VPS (OpenRouter Spawn)
+            </text>
+            <text
+              x="842"
+              y="81"
+              font-size="12.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(160,190,240,0.82)"
+            >
+              ▸ Hetzner VPS（€3.29/月）
+            </text>
+            <text
+              x="842"
+              y="100"
+              font-size="12.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(160,190,240,0.82)"
+            >
+              ▸ OpenRouter Spawn
+            </text>
+            <text
+              x="842"
+              y="119"
+              font-size="12.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(160,190,240,0.82)"
+            >
+              ▸ Remote server，不需開電腦
+            </text>
+            <line
+              x1="842"
+              y1="132"
+              x2="1132"
+              y2="132"
+              stroke="rgba(42,72,117,0.4)"
+              stroke-width="1"
+            />
+            <text
+              x="842"
+              y="153"
+              font-size="11.5"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(160,190,240,0.5)"
+            >
+              24/7 · Automated · Always on
+            </text>
+            <text
+              x="842"
+              y="173"
+              font-size="11"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(160,190,240,0.35)"
+            >
+              真正 AI 秘書模式
+            </text>
+
+            <!-- ── ARROWS ── -->
+            <line
+              x1="187"
+              y1="211"
+              x2="187"
+              y2="246"
+              stroke="rgba(255,255,255,0.4)"
+              stroke-width="2"
+              marker-end="url(#dl)"
+            />
+            <line
+              x1="587"
+              y1="211"
+              x2="587"
+              y2="246"
+              stroke="#fff200"
+              stroke-width="2.5"
+              marker-end="url(#dly)"
+            />
+            <line
+              x1="987"
+              y1="211"
+              x2="987"
+              y2="246"
+              stroke="rgba(255,255,255,0.4)"
+              stroke-width="2"
+              marker-end="url(#dl)"
+            />
+
+            <!-- ── HERMES BOXES ── -->
+            <rect x="127" y="256" width="130" height="50" rx="2" fill="#000" />
+            <rect
+              x="122"
+              y="251"
+              width="130"
+              height="50"
+              rx="2"
+              fill="#e91e63"
+              stroke="#000"
+              stroke-width="1.5"
+            />
+            <text
+              x="187"
+              y="278"
+              text-anchor="middle"
+              font-size="14"
+              font-weight="900"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              Hermes
+            </text>
+            <text
+              x="187"
+              y="294"
+              text-anchor="middle"
+              font-size="10"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,255,255,0.6)"
+            >
+              本機模式
+            </text>
+
+            <rect x="527" y="256" width="130" height="50" rx="2" fill="#000" />
+            <rect
+              x="522"
+              y="251"
+              width="130"
+              height="50"
+              rx="2"
+              fill="#e91e63"
+              stroke="#fff200"
+              stroke-width="2"
+            />
+            <text
+              x="587"
+              y="278"
+              text-anchor="middle"
+              font-size="14"
+              font-weight="900"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              Hermes
+            </text>
+            <text
+              x="587"
+              y="294"
+              text-anchor="middle"
+              font-size="10"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,255,255,0.6)"
+            >
+              CLI 模式
+            </text>
+
+            <rect x="927" y="256" width="130" height="50" rx="2" fill="#000" />
+            <rect
+              x="922"
+              y="251"
+              width="130"
+              height="50"
+              rx="2"
+              fill="#e91e63"
+              stroke="#000"
+              stroke-width="1.5"
+            />
+            <text
+              x="987"
+              y="278"
+              text-anchor="middle"
+              font-size="14"
+              font-weight="900"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              Hermes
+            </text>
+            <text
+              x="987"
+              y="294"
+              text-anchor="middle"
+              font-size="10"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,255,255,0.6)"
+            >
+              VPS 模式
+            </text>
+
+            <!-- ── FOOTER ── -->
+            <text
+              x="592"
+              y="330"
+              text-anchor="middle"
+              font-size="17"
+              font-weight="900"
+              font-family="'Noto Sans TC',sans-serif"
+              fill="#fff"
+            >
+              Same Hermes → Different Setup
+            </text>
+            <text
+              x="592"
+              y="350"
+              text-anchor="middle"
+              font-size="12"
+              font-family="'JetBrains Mono',monospace"
+              fill="rgba(255,255,255,0.38)"
+            >
+              Choose based on your goal
+            </text>
+          </svg>
+          <div class="quote">
+            「我選的是 Local Install，之後可能會搬到 VPS」
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 05 · One-line Install
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">INSTALL</span>
+          <div class="slide-title">安裝只要一行指令</div>
+          <div class="code lg">
+            <span class="c"># 一鍵安裝 Hermes Agent</span><br />
+            curl -fsSL
+            <span class="s"
+              >https://hermes-agent.nousresearch.com/install.sh</span
+            >
+            | bash
+          </div>
+          <div style="position: relative; margin-top: 14px; height: 430px">
+            <div
+              class="fragment fade-in-then-out"
+              data-fragment-index="1"
+              style="
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+              "
+            >
+              <div
+                style="
+                  font-family: var(--font-code);
+                  font-size: 0.58em;
+                  color: var(--yellow);
+                  font-weight: 700;
+                  letter-spacing: 0.06em;
+                "
+              >
+                STEP 1 · 安裝完成
+              </div>
+              <img
+                src="assets/install-step1.png"
+                style="
+                  max-height: 400px;
+                  max-width: 100%;
+                  width: auto;
+                  border: 1.5px solid #444;
+                  border-radius: 3px;
+                  display: block;
+                "
+              />
+            </div>
+            <div
+              class="fragment fade-in-then-out"
+              data-fragment-index="2"
+              style="
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+              "
+            >
+              <div
+                style="
+                  font-family: var(--font-code);
+                  font-size: 0.58em;
+                  color: var(--yellow);
+                  font-weight: 700;
+                  letter-spacing: 0.06em;
+                "
+              >
+                STEP 2 · 選擇 Provider
+              </div>
+              <img
+                src="assets/install-step2.png"
+                style="
+                  max-height: 400px;
+                  max-width: 100%;
+                  width: auto;
+                  border: 1.5px solid #444;
+                  border-radius: 3px;
+                  display: block;
+                "
+              />
+            </div>
+            <div
+              class="fragment fade-in"
+              data-fragment-index="3"
+              style="
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+              "
+            >
+              <div
+                style="
+                  font-family: var(--font-code);
+                  font-size: 0.58em;
+                  color: var(--yellow);
+                  font-weight: 700;
+                  letter-spacing: 0.06em;
+                "
+              >
+                STEP 3 · 選擇 Platform
+              </div>
+              <img
+                src="assets/install-step3.png"
+                style="
+                  max-height: 400px;
+                  max-width: 100%;
+                  width: auto;
+                  border: 1.5px solid #444;
+                  border-radius: 3px;
+                  display: block;
+                "
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 06 · Pitfalls
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-p">PITFALLS</span>
+          <div class="slide-title">踩坑紀錄</div>
+          <div class="g3">
+            <div class="card-red">
+              <div class="card-h">❌ Claude Pro 無法直接用</div>
+              <div class="card-body">
+                借到 session token 但會失效，造成 bot 斷線。<br /><br />
+                <strong>正解：</strong>改用
+                <strong>OpenRouter API key</strong>，穩定不斷線。
+              </div>
+            </div>
+            <div class="card-red">
+              <div class="card-h">❌ 免費 model 太慢</div>
+              <div class="card-body">
+                Nemotron 跑了整整 3 分鐘沒有回應，完全卡死。<br /><br />
+                <strong>正解：</strong>換成
+                <strong>Gemini 3 Flash</strong>，秒回。
+              </div>
+            </div>
+            <div class="card-red">
+              <div class="card-h">❌ Guardrail 擋掉免費 model</div>
+              <div class="card-body">
+                免費端點被安全策略攔截，無法正常使用。<br /><br />
+                <strong>正解：</strong>關掉「Free endpoints that may train on
+                request data」
+              </div>
+            </div>
+          </div>
+          <div
+            class="card-red"
+            style="
+              margin-top: 14px;
+              display: grid;
+              grid-template-columns: 1fr 320px;
+              gap: 16px;
+              align-items: start;
+            "
+          >
+            <div>
+              <div class="card-h">❌ 沒接搜尋工具，他假裝在搜尋 😄</div>
+              <div class="card-body">
+                沒設定 Tavily / SearXNG / Firecrawl，HermesBot
+                會說「正在執行搜尋動作...」然後用訓練資料回答——根本沒有真的上網。<br /><br />
+                <strong>正解：</strong>設定任一搜尋後端，確認 setup 畫面顯示 ✅
+                Web Search &amp; Extract。推薦：<a
+                  href="https://app.tavily.com/home"
+                  target="_blank"
+                  style="color: var(--pink); font-weight: 700"
+                  >Tavily</a
+                >（免費 1,000 credits/月）
+              </div>
+            </div>
+            <img
+              src="assets/pitfall-fake-search.png"
+              style="
+                width: 100%;
+                border-radius: 3px;
+                border: 1.5px solid var(--pink);
+                display: block;
+              "
+            />
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 07 · Which LLM
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">LLM GUIDE</span>
+          <div class="slide-title">Which LLM Should You Use?</div>
+          <svg viewBox="0 0 1184 445" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-top:6px">
+            <defs>
+              <marker id="aw7" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L8,3.5 Z" fill="#ffffff"/>
+              </marker>
+              <marker id="ag7" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L8,3.5 Z" fill="#b8d8be"/>
+              </marker>
+              <marker id="ap7" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L8,3.5 Z" fill="#e91e63"/>
+              </marker>
+            </defs>
+
+            <!-- START node -->
+            <rect x="537" y="13" width="120" height="38" rx="4" fill="#000"/>
+            <rect x="532" y="8" width="120" height="38" rx="4" fill="#b8d8be" stroke="#000" stroke-width="2"/>
+            <text x="592" y="27" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="15" font-weight="700" fill="#000">START</text>
+
+            <!-- Arrow START → Diamond -->
+            <line x1="592" y1="46" x2="592" y2="62" stroke="#fff" stroke-width="1.5" marker-end="url(#aw7)"/>
+
+            <!-- Diamond shadow -->
+            <polygon points="592,67 702,117 592,167 482,117" fill="#000" transform="translate(5,5)"/>
+            <!-- Diamond -->
+            <polygon points="592,67 702,117 592,167 482,117" fill="#fff200" stroke="#000" stroke-width="2"/>
+            <text x="592" y="105" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="11.5" font-weight="700" fill="#000">Do you have</text>
+            <text x="592" y="120" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="11.5" font-weight="700" fill="#000">OpenAI access</text>
+            <text x="592" y="135" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="11.5" font-weight="700" fill="#000">(Codex / API)?</text>
+
+            <!-- YES arrow: left -->
+            <path d="M482,117 L155,117 L155,185" stroke="#b8d8be" stroke-width="1.5" fill="none" marker-end="url(#ag7)"/>
+            <rect x="392" y="105" width="44" height="20" rx="2" fill="#b8d8be"/>
+            <text x="414" y="118" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">YES</text>
+
+            <!-- NO arrow: right -->
+            <path d="M702,117 L822,117 L822,185" stroke="#e91e63" stroke-width="1.5" fill="none" marker-end="url(#ap7)"/>
+            <rect x="710" y="105" width="36" height="20" rx="2" fill="#e91e63"/>
+            <text x="728" y="118" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#fff">NO</text>
+
+            <!-- OpenAI (Codex) box -->
+            <rect x="35" y="190" width="250" height="148" fill="#000"/>
+            <rect x="30" y="185" width="250" height="148" fill="#fff" stroke="#000" stroke-width="2"/>
+            <line x1="30" y1="208" x2="280" y2="208" stroke="#000" stroke-width="1.5"/>
+            <text x="46" y="200" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#000">Use OpenAI (Codex)</text>
+            <text x="46" y="225" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#333">・Works reliably with Hermes</text>
+            <text x="46" y="242" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#333">・No blocking issues</text>
+            <text x="46" y="259" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#333">・Smooth integration</text>
+            <line x1="30" y1="272" x2="280" y2="272" stroke="#e0e0e0" stroke-width="1"/>
+            <text x="46" y="291" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700" fill="#b8d8be">★ Best choice if available</text>
+
+            <!-- Claude/Gemini warning note (top right) -->
+            <text x="978" y="70" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="rgba(255,255,255,0.52)">Claude / Gemini</text>
+            <text x="978" y="86" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="rgba(255,255,255,0.36)">May block or restrict Hermes usage</text>
+            <path d="M1010,90 Q960,130 940,182" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" fill="none" stroke-dasharray="4,3"/>
+
+            <!-- OpenRouter box (pink accent) -->
+            <rect x="697" y="190" width="260" height="125" fill="#000"/>
+            <rect x="692" y="185" width="260" height="125" fill="#fff" stroke="#e91e63" stroke-width="2"/>
+            <line x1="692" y1="208" x2="952" y2="208" stroke="#e91e63" stroke-width="1.5"/>
+            <text x="708" y="200" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#000">Use OpenRouter</text>
+            <text x="708" y="225" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#333">・Auto-routing</text>
+            <text x="708" y="242" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#333">・Multiple models</text>
+            <text x="708" y="259" font-family="'Noto Sans TC',sans-serif" font-size="11" fill="#333">・Flexible setup</text>
+            <text x="708" y="294" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#e91e63">推薦首選</text>
+
+            <!-- Branch from OpenRouter → 3 sub-boxes -->
+            <line x1="822" y1="310" x2="822" y2="335" stroke="#fff" stroke-width="1.5"/>
+            <line x1="594" y1="335" x2="1004" y2="335" stroke="#fff" stroke-width="1.5"/>
+            <line x1="594" y1="335" x2="594" y2="352" stroke="#fff" stroke-width="1.5" marker-end="url(#aw7)"/>
+            <line x1="822" y1="335" x2="822" y2="352" stroke="#fff" stroke-width="1.5" marker-end="url(#aw7)"/>
+            <line x1="1004" y1="335" x2="1004" y2="352" stroke="#fff" stroke-width="1.5" marker-end="url(#aw7)"/>
+
+            <!-- Sub-box: Free Models (Elephant) -->
+            <rect x="525" y="357" width="148" height="88" fill="#000"/>
+            <rect x="520" y="352" width="148" height="88" fill="#fff" stroke="#000" stroke-width="2"/>
+            <line x1="520" y1="373" x2="668" y2="373" stroke="#000" stroke-width="1.5"/>
+            <text x="594" y="366" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">Free Models</text>
+            <text x="536" y="390" font-family="'Noto Sans TC',sans-serif" font-size="10.5" fill="#333">・Low cost</text>
+            <text x="536" y="407" font-family="'Noto Sans TC',sans-serif" font-size="10.5" fill="#333">・Good performance</text>
+            <text x="536" y="424" font-family="'JetBrains Mono',monospace" font-size="9" fill="#888">(Elephant / Mistral)</text>
+
+            <!-- Sub-box: Kimi -->
+            <rect x="753" y="357" width="148" height="88" fill="#000"/>
+            <rect x="748" y="352" width="148" height="88" fill="#fff" stroke="#000" stroke-width="2"/>
+            <line x1="748" y1="373" x2="896" y2="373" stroke="#000" stroke-width="1.5"/>
+            <text x="822" y="366" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">Kimi</text>
+            <text x="764" y="390" font-family="'Noto Sans TC',sans-serif" font-size="10.5" fill="#333">・Fast</text>
+            <text x="764" y="407" font-family="'Noto Sans TC',sans-serif" font-size="10.5" fill="#333">・Not restricted</text>
+            <text x="764" y="424" font-family="'JetBrains Mono',monospace" font-size="9" fill="#888">(non-coding tasks)</text>
+
+            <!-- Sub-box: Other Models -->
+            <rect x="935" y="357" width="148" height="88" fill="#000"/>
+            <rect x="930" y="352" width="148" height="88" fill="#fff" stroke="#000" stroke-width="2"/>
+            <line x1="930" y1="373" x2="1078" y2="373" stroke="#000" stroke-width="1.5"/>
+            <text x="1004" y="366" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">Other Models</text>
+            <text x="946" y="390" font-family="'Noto Sans TC',sans-serif" font-size="10.5" fill="#333">・Choose based</text>
+            <text x="946" y="407" font-family="'Noto Sans TC',sans-serif" font-size="10.5" fill="#333"> on task</text>
+          </svg>
+          <div class="quote">
+            「我的選擇：OpenRouter + Gemini Flash（日常）· Sonnet 4.6（Demo 用）」
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 08 · Mode Router
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-g">COST SAVING</span>
+          <div class="slide-title">一個前綴，省一半錢</div>
+          <svg viewBox="0 0 1184 305" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-top:8px">
+            <defs>
+              <marker id="aw8" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L8,3.5 Z" fill="#ffffff"/>
+              </marker>
+            </defs>
+
+            <!-- User Prompt box (dark) -->
+            <rect x="15" y="25" width="148" height="270" fill="#000"/>
+            <rect x="10" y="20" width="148" height="270" fill="#222" stroke="#3a3a3a" stroke-width="1.5"/>
+            <line x1="10" y1="41" x2="158" y2="41" stroke="#444" stroke-width="1.5"/>
+            <text x="84" y="33" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#fff">User Prompt</text>
+            <text x="26" y="62" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="rgba(255,255,255,0.45)">前綴指定模式：</text>
+            <!-- prefix chips -->
+            <rect x="26" y="80" width="50" height="22" rx="2" fill="#fff200"/>
+            <text x="51" y="91" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#000">cheap:</text>
+            <rect x="26" y="108" width="38" height="22" rx="2" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="45" y="119" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#000">fix:</text>
+            <rect x="26" y="136" width="50" height="22" rx="2" fill="#e91e63"/>
+            <text x="51" y="147" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#fff">code:</text>
+            <rect x="26" y="164" width="50" height="22" rx="2" fill="#444" stroke="#666" stroke-width="1"/>
+            <text x="51" y="175" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#fff">plan:</text>
+
+            <!-- Arrow: User Prompt → Mode Router -->
+            <line x1="158" y1="155" x2="192" y2="155" stroke="#fff" stroke-width="1.5" marker-end="url(#aw8)"/>
+
+            <!-- Mode Router box (dark, pink accent) -->
+            <rect x="198" y="25" width="155" height="270" fill="#000"/>
+            <rect x="193" y="20" width="155" height="270" fill="#222" stroke="#e91e63" stroke-width="1.5"/>
+            <line x1="193" y1="41" x2="348" y2="41" stroke="#e91e63" stroke-width="1.5"/>
+            <text x="270" y="33" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#fff">Mode Router</text>
+            <text x="209" y="68" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Hermes 讀取前綴</text>
+            <text x="209" y="84" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">選擇對應的 lane</text>
+
+            <!-- Arrow: Mode Router → branch -->
+            <line x1="348" y1="155" x2="372" y2="155" stroke="#fff" stroke-width="1.5"/>
+            <!-- Vertical branch bar -->
+            <line x1="372" y1="43" x2="372" y2="268" stroke="#fff" stroke-width="1.5"/>
+
+            <!-- ── Row 1: cheap (y=43) ── -->
+            <line x1="372" y1="43" x2="392" y2="43" stroke="#fff" stroke-width="1.5"/>
+            <rect x="392" y="31" width="58" height="24" fill="#fff200" stroke="#000" stroke-width="1.5"/>
+            <text x="421" y="43" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">cheap:</text>
+            <text x="460" y="43" dominant-baseline="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="rgba(255,255,255,0.5)">Summaries · simple questions</text>
+            <line x1="634" y1="43" x2="669" y2="43" stroke="#fff" stroke-width="1.5" marker-end="url(#aw8)"/>
+            <rect x="679" y="22" width="185" height="50" fill="#000"/>
+            <rect x="674" y="17" width="185" height="50" fill="#fff" stroke="#000" stroke-width="2"/>
+            <line x1="674" y1="37" x2="859" y2="37" stroke="#000" stroke-width="1.5"/>
+            <text x="766" y="29" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">Cheap / Fast Model</text>
+            <text x="690" y="54" dominant-baseline="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#555">Gemini Flash · Mistral</text>
+
+            <!-- ── Row 2: fix (y=118) ── -->
+            <line x1="372" y1="118" x2="392" y2="118" stroke="#fff" stroke-width="1.5"/>
+            <rect x="392" y="106" width="42" height="24" fill="#fff" stroke="#000" stroke-width="1.5"/>
+            <text x="413" y="118" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">fix:</text>
+            <text x="444" y="118" dominant-baseline="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="rgba(255,255,255,0.5)">Small tweaks · button fixes</text>
+            <line x1="634" y1="118" x2="669" y2="118" stroke="#fff" stroke-width="1.5" marker-end="url(#aw8)"/>
+            <rect x="679" y="97" width="185" height="50" fill="#000"/>
+            <rect x="674" y="92" width="185" height="50" fill="#fff" stroke="#000" stroke-width="2"/>
+            <line x1="674" y1="112" x2="859" y2="112" stroke="#000" stroke-width="1.5"/>
+            <text x="766" y="104" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">Lower-Cost Coding</text>
+            <text x="690" y="129" dominant-baseline="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#555">Haiku 4.5 · GPT-4o mini</text>
+
+            <!-- ── Row 3: code (y=193) ── -->
+            <line x1="372" y1="193" x2="392" y2="193" stroke="#fff" stroke-width="1.5"/>
+            <rect x="392" y="181" width="52" height="24" fill="#e91e63" stroke="#000" stroke-width="1.5"/>
+            <text x="418" y="193" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#fff">code:</text>
+            <text x="454" y="193" dominant-baseline="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="rgba(255,255,255,0.5)">Debugging · implementation</text>
+            <line x1="634" y1="193" x2="669" y2="193" stroke="#fff" stroke-width="1.5" marker-end="url(#aw8)"/>
+            <rect x="679" y="172" width="185" height="50" fill="#000"/>
+            <rect x="674" y="167" width="185" height="50" fill="#fff" stroke="#e91e63" stroke-width="2"/>
+            <line x1="674" y1="187" x2="859" y2="187" stroke="#e91e63" stroke-width="1.5"/>
+            <text x="766" y="179" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">Stronger Coding</text>
+            <text x="690" y="204" dominant-baseline="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#555">Sonnet 4.6 · GPT-4o</text>
+
+            <!-- ── Row 4: plan (y=268) ── -->
+            <line x1="372" y1="268" x2="392" y2="268" stroke="#fff" stroke-width="1.5"/>
+            <rect x="392" y="256" width="52" height="24" fill="#2a2a2a" stroke="#666" stroke-width="1.5"/>
+            <text x="418" y="268" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#fff">plan:</text>
+            <text x="454" y="268" dominant-baseline="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="rgba(255,255,255,0.5)">Architecture · multi-step thinking</text>
+            <line x1="634" y1="268" x2="669" y2="268" stroke="#fff" stroke-width="1.5" marker-end="url(#aw8)"/>
+            <rect x="679" y="247" width="185" height="50" fill="#000"/>
+            <rect x="674" y="242" width="185" height="50" fill="#fff" stroke="#000" stroke-width="2"/>
+            <line x1="674" y1="262" x2="859" y2="262" stroke="#000" stroke-width="1.5"/>
+            <text x="766" y="254" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#000">Highest-Reasoning</text>
+            <text x="690" y="279" dominant-baseline="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#555">Opus 4.7 · o3</text>
+
+            <!-- Converging arrows → Best Cost/Quality -->
+            <path d="M859,42 L905,155" stroke="#fff" stroke-width="1.5" fill="none" marker-end="url(#aw8)"/>
+            <path d="M859,117 L905,155" stroke="#fff" stroke-width="1.5" fill="none" marker-end="url(#aw8)"/>
+            <path d="M859,192 L905,155" stroke="#fff" stroke-width="1.5" fill="none" marker-end="url(#aw8)"/>
+            <path d="M859,267 L905,155" stroke="#fff" stroke-width="1.5" fill="none" marker-end="url(#aw8)"/>
+
+            <!-- Best Cost / Quality Match (green) -->
+            <rect x="915" y="115" width="240" height="90" fill="#000"/>
+            <rect x="910" y="110" width="240" height="90" fill="#b8d8be" stroke="#000" stroke-width="2"/>
+            <line x1="910" y1="130" x2="1150" y2="130" stroke="#000" stroke-width="1.5"/>
+            <text x="1030" y="122" text-anchor="middle" dominant-baseline="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#000">Best Cost /</text>
+            <text x="1030" y="150" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#000">Quality Match</text>
+            <text x="1030" y="180" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#333">每次任務自動最佳化</text>
+          </svg>
+          <div class="quote">
+            「Best practice: default cheap, upgrade only when the task needs
+            it」
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 09 · Dashboard
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">DASHBOARD</span>
+          <div class="slide-title">hermes dashboard</div>
+          <div class="code">
+            <span class="k">hermes</span> dashboard &nbsp;<span class="c"
+              >→</span
+            >&nbsp; <span class="s">http://127.0.0.1:9119</span>
+          </div>
+          <div class="g32">
+            <img src="assets/dashboard-sessions.png" style="width:100%;border:1.5px solid #444;border-radius:3px;display:block;">
+            <div class="card-dark">
+              <div class="card-h">功能模組</div>
+              <ul class="flist">
+                <li>Sessions（對話記錄）</li>
+                <li>Analytics（使用分析）</li>
+                <li>Cron（定時任務）</li>
+                <li>Skills（技能管理）</li>
+                <li>Kanban（任務看板）</li>
+                <li>Logs（系統日誌）</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 10 · Kanban
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">KANBAN</span>
+          <div class="slide-title">Agent 自己管理工作清單</div>
+          <div style="position:relative;margin-top:10px;height:430px;">
+            <!-- Default visible: Discord request → fades out on first click -->
+            <div class="fragment fade-out" data-fragment-index="1" style="position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;">
+              <div style="font-family:var(--font-code);font-size:0.55em;color:var(--yellow);font-weight:700;letter-spacing:0.06em;">你說：請在 Kanban 建立「讀書會準備」任務清單</div>
+              <img src="assets/discord-kanban-request.png" style="max-height:410px;max-width:100%;width:auto;border:1.5px solid #444;border-radius:3px;display:block;">
+            </div>
+            <div class="fragment fade-in-then-out" data-fragment-index="1" style="position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;">
+              <div style="font-family:var(--font-code);font-size:0.55em;color:var(--yellow);font-weight:700;letter-spacing:0.06em;">KANBAN · 工作看板總覽</div>
+              <img src="assets/kanban-overview.png" style="max-height:410px;max-width:100%;width:auto;border:1.5px solid #444;border-radius:3px;display:block;">
+            </div>
+            <div class="fragment fade-in-then-out" data-fragment-index="2" style="position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;">
+              <div style="font-family:var(--font-code);font-size:0.55em;color:var(--yellow);font-weight:700;letter-spacing:0.06em;">KANBAN · IN PROGRESS 任務執行中</div>
+              <img src="assets/kanban-progress.png" style="max-height:410px;max-width:100%;width:auto;border:1.5px solid #444;border-radius:3px;display:block;">
+            </div>
+            <div class="fragment fade-in-then-out" data-fragment-index="3" style="position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;">
+              <div style="font-family:var(--font-code);font-size:0.55em;color:var(--yellow);font-weight:700;letter-spacing:0.06em;">KANBAN · 任務詳情 + Agent 執行 Log</div>
+              <img src="assets/kanban-detail.png" style="max-height:410px;max-width:100%;width:auto;border:1.5px solid #444;border-radius:3px;display:block;">
+            </div>
+            <div class="fragment fade-in" data-fragment-index="4" style="position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;">
+              <div style="font-family:var(--font-code);font-size:0.55em;color:var(--yellow);font-weight:700;letter-spacing:0.06em;">CRON · 定時任務建立（美股每日報告）</div>
+              <img src="assets/kanban-cron.png" style="max-height:410px;max-width:100%;width:auto;border:1.5px solid #444;border-radius:3px;display:block;">
+            </div>
+          </div>
+          <div class="quote">「你只需要當老闆，下指令就好」</div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 11 · What is Skill
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-g">SKILLS</span>
+          <div class="slide-title">Skill = 教 Agent 一項新技能</div>
+          <div class="g2">
+            <div class="col">
+              <div class="card">
+                <div class="card-h">什麼是 Skill？</div>
+                <div class="card-body">
+                  Skill 就是一份 <strong>Markdown 檔案</strong>，<br />
+                  包含指令說明、範例、執行流程。<br /><br />
+                  放在
+                  <code class="mono">~/.hermes/skills/</code> 資料夾，<br />
+                  Hermes 自動載入對應的 skill。<br /><br />
+                  目前有
+                  <strong>102 個內建 skill</strong
+                  >，<br />涵蓋各種日常任務場景。
+                </div>
+              </div>
+              <div class="code">
+                ~/.hermes/<br />
+                &nbsp;&nbsp;skills/<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">summarize.md</span
+                ><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">stock-report.md</span
+                ><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="s">hyperframes.md</span
+                >&nbsp;&nbsp;<span class="c"># 自訂</span>
+              </div>
+            </div>
+            <img src="assets/demo-request.png" style="width:100%;max-height:340px;object-fit:contain;object-position:top;border:1.5px solid #444;border-radius:3px;display:block;">
+          </div>
+
+          <!-- Fragment: full-slide iframe of the HTML report -->
+          <div class="fragment fade-in" data-fragment-index="1" style="position:absolute;inset:0;background:#1a1a1a;padding:34px 48px;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;">
+            <div style="font-family:var(--font-code);font-size:0.55em;color:var(--yellow);font-weight:700;letter-spacing:0.06em;flex-shrink:0;">DEMO OUTPUT · Hermes 生成的 IonQ 2026 研究報告</div>
+            <iframe src="report_2026.html" style="flex:1;width:100%;border:1.5px solid #444;border-radius:3px;display:block;" loading="lazy"></iframe>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 12 · Add Custom Skill
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-g">SKILLS</span>
+          <div class="slide-title">我自己新增了一個 HyperFrames Skill</div>
+          <div class="g2">
+            <div class="col">
+              <div class="card-accent">
+                <div class="card-h" style="border-color: var(--pink)">
+                  在 Discord 傳一句話
+                </div>
+                <div class="card-body" style="font-style: italic; color: #333">
+                  「請幫我建立 HyperFrames skill，<br />
+                  參考文件：<br />
+                  https://hyperframes.heygen.com/quickstart」
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-h">他做了什麼？</div>
+                <div class="card-body">
+                  ✅ 自己讀文件<br />
+                  ✅ 自己撰寫 SKILL.md<br />
+                  ✅ 自動存到 ~/.hermes/skills/<br />
+                  ✅ 立即可以使用
+                </div>
+              </div>
+            </div>
+            <img src="assets/hyperframes-skill-request.png" style="width:100%;max-height:340px;object-fit:contain;object-position:top;border:1.5px solid #444;border-radius:3px;display:block;">
+          </div>
+          <div class="quote">「從此可以叫他把任何報告轉成動畫影片」</div>
+
+          <!-- Fragment: full-slide iframe of the animated report -->
+          <div class="fragment fade-in" data-fragment-index="1" style="position:absolute;inset:0;background:#1a1a1a;padding:34px 48px;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;">
+            <div style="font-family:var(--font-code);font-size:0.55em;color:var(--yellow);font-weight:700;letter-spacing:0.06em;flex-shrink:0;">DEMO OUTPUT · Hermes 生成的 IonQ 動畫報告（HyperFrames）</div>
+            <iframe src="ionq_animated_report.html" style="flex:1;width:100%;border:1.5px solid #444;border-radius:3px;display:block;" loading="lazy"></iframe>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 13 · Learning Loop
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">LEARNING</span>
+          <div class="slide-title">越用越聰明：Hermes 的學習系統</div>
+          <div class="g32">
+            <div class="img-ph" style="min-height: 285px">
+              <div class="img-ph-icon">🧠</div>
+              <div>
+                [圖片: LLM Wiki System 架構圖]<br />Raw Sources → Hermes → LLM
+                Wiki → Better Results
+              </div>
+            </div>
+            <div class="card-dark">
+              <div class="card-h">學習流程</div>
+              <ul class="flist">
+                <li>Raw Sources 輸入</li>
+                <li>Hermes 整理摘要</li>
+                <li>寫入 LLM Wiki</li>
+                <li>Continuously Improves</li>
+                <li>Gets smarter over time</li>
+              </ul>
+            </div>
+          </div>
+          <div class="quote">
+            「不像 ChatGPT 每次從零開始，Hermes 記得所有事」
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 14 · Security Comparison
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-p">SECURITY</span>
+          <div class="slide-title">為什麼不用 OpenClaw？安全性分析</div>
+          <table>
+            <thead>
+              <tr>
+                <th>安全指標</th>
+                <th style="color: var(--green)">Hermes ✅</th>
+                <th style="color: #ff6b6b">OpenClaw ⚠️</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>CVE 數量</strong></td>
+                <td style="color: green; font-weight: 700">0</td>
+                <td style="color: red; font-weight: 700">138+</td>
+              </tr>
+              <tr>
+                <td><strong>惡意 Skill</strong></td>
+                <td>無（自動生成，無第三方上傳）</td>
+                <td>ClawHub 1,400+ 惡意 skill</td>
+              </tr>
+              <tr>
+                <td><strong>重大漏洞</strong></td>
+                <td style="color: green">無</td>
+                <td>ClawBleed（CVE-2026-25253）<br />未授權 RCE</td>
+              </tr>
+              <tr>
+                <td><strong>Sandbox</strong></td>
+                <td>Container 隔離</td>
+                <td>選用，預設弱</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="quote" style="margin-top: 12px">
+            「開源不代表不安全，但要選對架構」
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 15 · My HermesBot
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">MY BOT</span>
+          <div class="slide-title">認識我的 AI 秘書：HermesBot</div>
+          <div class="g32">
+            <div class="img-ph" style="min-height: 275px">
+              <div class="img-ph-icon">💬</div>
+              <div>[圖片: HermesBot Discord 截圖]</div>
+            </div>
+            <div class="card-dark">
+              <div class="card-h">自動化任務清單</div>
+              <ul class="flist">
+                <li>📈 06:00 推播美股報告（10 檔持股）</li>
+                <li>🇯🇵 07:00 推播 5 個日文五十音</li>
+                <li>
+                  💡 10:00 / 14:00 / 18:00<br />&nbsp;&nbsp;&nbsp;&nbsp;推播 AI
+                  / 前端技術新知
+                </li>
+                <li>🔍 隨時搜尋最新新聞</li>
+                <li>📊 分析競爭對手動態</li>
+                <li>📄 自動生成各類報告</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 16 · Cost Summary
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-y">COST</span>
+          <div class="slide-title">每個月花多少？</div>
+          <table>
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>費用</th>
+                <th>台幣</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Claude Pro</td>
+                <td>$20 / 月</td>
+                <td>~NT$630</td>
+              </tr>
+              <tr>
+                <td>Hetzner CX22（VPS）</td>
+                <td>€3.29 / 月</td>
+                <td>~NT$121</td>
+              </tr>
+              <tr>
+                <td>OpenRouter API</td>
+                <td>~$3–5 / 月</td>
+                <td>~NT$95–157</td>
+              </tr>
+              <tr>
+                <td>Tavily Search</td>
+                <td>免費（1,000 credits）</td>
+                <td style="color: green; font-weight: 700">NT$0</td>
+              </tr>
+              <tr class="total">
+                <td><strong>合計</strong></td>
+                <td></td>
+                <td><strong>~NT$850–900</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="quote" style="margin-top: 11px">
+            「比訂一個財經 app 還便宜，而且完全客製化」
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 17 · Conclusion
+══════════════════════════════════════════════════ -->
+        <section data-transition="fade">
+          <span class="tag tag-y">START NOW</span>
+          <div class="slide-title">今天就開始</div>
+          <div class="g23" style="margin-top: 14px">
+            <div>
+              <ul class="slist">
+                <li>
+                  <div class="snum">1</div>
+                  <div class="slist-t">
+                    <strong>curl 安裝 Hermes</strong>
+                    <span>一行指令，3 分鐘完成</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="snum">2</div>
+                  <div class="slist-t">
+                    <strong>設定 Discord Bot + OpenRouter</strong>
+                    <span>貼上 Token，完成連線</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="snum">3</div>
+                  <div class="slist-t">
+                    <strong>下第一個指令，當 AI 秘書的老闆</strong>
+                    <span>傳一句話，開始自動化你的生活</span>
+                  </div>
+                </li>
+              </ul>
+              <div class="quote">「你不需要懂 AI，你只需要懂得下指令」</div>
+            </div>
+            <div class="center-col">
+              <div class="qr-ph">
+                [QR Code]<br /><br />
+                hermes-agent.<br />nousresearch.com
+              </div>
+              <div
+                style="
+                  color: rgba(255, 255, 255, 0.36);
+                  font-family: var(--font-code);
+                  font-size: 0.54em;
+                  text-align: center;
+                "
+              >
+                掃碼開始安裝
+              </div>
+              <div class="row" style="justify-content: center">
+                <span class="badge">MIT 開源</span>
+                <span class="badge">免費試用</span>
+                <span class="badge">v0.13.0</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- /slides -->
+    </div>
+    <!-- /reveal -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        width: 1280,
+        height: 720,
+        margin: 0,
+        minScale: 0.2,
+        maxScale: 2.0,
+        transition: "slide",
+        transitionSpeed: "default",
+        backgroundTransition: "fade",
+        slideNumber: "c/t",
+        controls: true,
+        progress: true,
+        center: false,
+        keyboard: true,
+        touch: true,
+        loop: false,
+      });
+    </script>
+    <script>
+      const lbOverlay = document.createElement("div");
+      lbOverlay.className = "lb-overlay";
+      const lbImg = document.createElement("img");
+      lbOverlay.appendChild(lbImg);
+      document.body.appendChild(lbOverlay);
+
+      document.querySelectorAll(".reveal img").forEach((img) => {
+        img.addEventListener("click", (e) => {
+          e.stopPropagation();
+          lbImg.src = img.src;
+          lbOverlay.classList.add("active");
+        });
+      });
+
+      lbOverlay.addEventListener("click", () =>
+        lbOverlay.classList.remove("active"),
+      );
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") lbOverlay.classList.remove("active");
+      });
+    </script>
+  </body>
+</html>
