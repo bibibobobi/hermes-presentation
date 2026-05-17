@@ -2195,6 +2195,78 @@
         </section>
 
         <!-- ══════════════════════════════════════════════════
+     Slide 14b · Memory Architecture
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-g">MEMORY</span>
+          <div class="slide-title">跨 Session 的記憶是怎麼運作的？</div>
+
+          <!-- Row 1: SOUL.md + memories -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+
+            <div style="background:#1a1a1a;border:2px solid var(--pink);box-shadow:4px 4px 0 var(--pink);padding:16px;">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--pink);font-weight:700;letter-spacing:.08em;margin-bottom:6px;">LAYER 01 · AGENT PERSONA</div>
+              <div style="font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:10px;">SOUL.md</div>
+              <div style="background:#111;border-left:3px solid var(--pink);padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#ccc;line-height:1.7;margin-bottom:10px;">
+                <span style="color:#555;"># loaded fresh each message</span><br>
+                You are a sharp, direct assistant<br>
+                Treat her like a sharp colleague,<br>
+                not a customer.
+              </div>
+              <div style="font-size:0.8rem;color:#aaa;">每條訊息都重新讀取 — 改完立即生效，不需重啟</div>
+            </div>
+
+            <div style="background:#1a1a1a;border:2px solid var(--green);box-shadow:4px 4px 0 #3d7a47;padding:16px;">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--green);font-weight:700;letter-spacing:.08em;margin-bottom:6px;">LAYER 02 · USER MEMORY</div>
+              <div style="font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:10px;">memories/*.md</div>
+              <div style="background:#111;border-left:3px solid var(--green);padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#ccc;line-height:1.8;margin-bottom:10px;">
+                前端工程師 · WebGL/GSAP<br>
+                美股：NVDA IONQ PLTR…<br>
+                <span style="color:#555;">§</span>&nbsp; 動漫：銀魂、咒術迴戰<br>
+                <span style="color:#555;">§</span>&nbsp; 每天通勤三小時
+              </div>
+              <div style="font-size:0.8rem;color:#aaa;">純文字 Markdown，§ 分隔段落，<strong style="color:#fff">沒有向量資料庫</strong></div>
+            </div>
+          </div>
+
+          <!-- Row 2: state.db full width -->
+          <div style="background:#1a1a1a;border:2px solid var(--yellow);box-shadow:4px 4px 0 #a09000;padding:14px 18px;margin-top:12px;display:flex;align-items:center;gap:20px;">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--yellow);font-weight:700;letter-spacing:.08em;margin-bottom:4px;">LAYER 03 · FULL HISTORY</div>
+              <div style="font-weight:700;font-size:1.05rem;color:#fff;">state.db &nbsp;<span style="font-size:0.75rem;color:#666;font-weight:400;">(SQLite)</span></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-left:8px;">
+              <div style="background:#111;padding:8px 16px;text-align:center;border:1px solid #333;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1;">415</div>
+                <div style="font-size:0.65rem;color:#666;margin-top:2px;">訊息</div>
+              </div>
+              <div style="background:#111;padding:8px 16px;text-align:center;border:1px solid #333;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1;">26</div>
+                <div style="font-size:0.65rem;color:#666;margin-top:2px;">sessions</div>
+              </div>
+            </div>
+            <div style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-left:4px;">
+              Trigram 全文搜尋索引 &nbsp;·&nbsp; <code style="font-size:0.75rem;color:#ccc;background:#111;padding:1px 5px;">handoff_state</code> 中斷可續接 &nbsp;·&nbsp; parent/child session 鏈
+            </div>
+          </div>
+
+          <!-- Cron bar -->
+          <div style="margin-top:10px;background:#111;border:1.5px solid #2a2a2a;padding:10px 16px;display:flex;align-items:center;gap:18px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--pink);font-weight:700;white-space:nowrap;">CRON JOBS</div>
+            <div style="display:flex;gap:18px;">
+              <span style="font-size:0.8rem;color:#ccc;"><span style="font-family:'JetBrains Mono',monospace;color:var(--yellow);">06:00</span> 美股日報</span>
+              <span style="font-size:0.8rem;color:#ccc;"><span style="font-family:'JetBrains Mono',monospace;color:var(--yellow);">07:00</span> 日文五十音（記得你學過哪些）</span>
+              <span style="font-size:0.8rem;color:#ccc;"><span style="font-family:'JetBrains Mono',monospace;color:var(--yellow);">10/14/18</span> AI 股 + 前端新知</span>
+            </div>
+            <div style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#444;white-space:nowrap;">→ Discord</div>
+          </div>
+          <div class="quote" style="margin-top:10px;font-size:0.82rem;line-height:1.7;">
+            幾個 Markdown 檔案 + SQLite — 沒有向量資料庫，沒有 embedding pipeline。<br>
+            <span style="opacity:0.65;font-size:0.78rem;">每次 session 啟動時，系統從這三層重建完整的 system prompt，確保上下文還原。簡單，但夠用。</span>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
      Slide 13 · Learning Loop
 ══════════════════════════════════════════════════ -->
         <section data-transition="slide">
@@ -2292,7 +2364,87 @@
         </section>
 
         <!-- ══════════════════════════════════════════════════
-     Slide 14 · Security Comparison
+     Slide 14c · Growth Flywheel
+══════════════════════════════════════════════════ -->
+        <section data-transition="slide">
+          <span class="tag tag-g">LEARNING</span>
+          <div class="slide-title">兩條管道，一個閉環</div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px;align-items:start;">
+
+            <!-- Left: flywheel SVG -->
+            <svg viewBox="0 0 360 370" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+              <defs>
+                <marker id="awfl" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L7,3 Z" fill="#555"/>
+                </marker>
+                <marker id="awfl2" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L7,3 Z" fill="#e91e63"/>
+                </marker>
+              </defs>
+
+              <!-- Step 1 -->
+              <rect x="4" y="0" width="352" height="44" fill="#111" stroke="#e91e63" stroke-width="1.5"/>
+              <text x="180" y="17" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#e91e63">USER 糾正 Hermes 的做法</text>
+              <text x="180" y="33" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#aaa">「字太小」「不要每次加分隔線」</text>
+
+              <line x1="180" y1="44" x2="180" y2="62" stroke="#555" stroke-width="1.5" marker-end="url(#awfl)"/>
+
+              <!-- Step 2 -->
+              <rect x="4" y="64" width="352" height="44" fill="#111" stroke="#b8d8be" stroke-width="1.5"/>
+              <text x="180" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#b8d8be">Skill 自動更新</text>
+              <text x="180" y="97" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#aaa">下次 session 已知怎麼做，不用再說</text>
+
+              <line x1="180" y1="108" x2="180" y2="126" stroke="#555" stroke-width="1.5" marker-end="url(#awfl)"/>
+
+              <!-- Step 3 -->
+              <rect x="4" y="128" width="352" height="44" fill="#111" stroke="#e91e63" stroke-width="1.5"/>
+              <text x="180" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#e91e63">USER 加文章進 wiki</text>
+              <text x="180" y="161" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#aaa">Human curates sources</text>
+
+              <line x1="180" y1="172" x2="180" y2="190" stroke="#555" stroke-width="1.5" marker-end="url(#awfl)"/>
+
+              <!-- Step 4 -->
+              <rect x="4" y="192" width="352" height="44" fill="#111" stroke="#b8d8be" stroke-width="1.5"/>
+              <text x="180" y="209" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#b8d8be">Agent 合成、交叉參照</text>
+              <text x="180" y="225" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#aaa">Agent synthesizes — 不是重新 google</text>
+
+              <line x1="180" y1="236" x2="180" y2="254" stroke="#555" stroke-width="1.5" marker-end="url(#awfl)"/>
+
+              <!-- Step 5 -->
+              <rect x="4" y="256" width="352" height="44" fill="#111" stroke="#555" stroke-width="1.5"/>
+              <text x="180" y="273" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#fff">回答品質更高</text>
+              <text x="180" y="289" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="10" fill="#aaa">User 提供更多資料</text>
+
+              <!-- Loop back arrow -->
+              <path d="M356,278 C390,278 390,22 356,22" stroke="#e91e63" stroke-width="1.5" fill="none" marker-end="url(#awfl2)" stroke-dasharray="4 3"/>
+              <text x="370" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#e91e63" transform="rotate(90,370,155)">閉環</text>
+
+            </svg>
+
+            <!-- Right: two panels -->
+            <div style="display:flex;flex-direction:column;gap:12px;">
+
+              <div style="background:#1a1a1a;border:2px solid var(--pink);box-shadow:4px 4px 0 var(--pink);padding:14px 16px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--pink);font-weight:700;letter-spacing:.08em;margin-bottom:8px;">PIPELINE A · 自動學習</div>
+                <div style="font-size:0.82rem;color:#ccc;line-height:1.7;">每 <strong style="color:#fff;">10 輪</strong>自動 review 對話<br>寫入 memories/ 和 skills/<br><span style="color:#888;font-size:0.75rem;">你的糾正 = first-class signal</span></div>
+              </div>
+
+              <div style="background:#1a1a1a;border:2px solid var(--green);box-shadow:4px 4px 0 #3d7a47;padding:14px 16px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--green);font-weight:700;letter-spacing:.08em;margin-bottom:8px;">PIPELINE B · 主動建構</div>
+                <div style="font-size:0.82rem;color:#ccc;line-height:1.7;"><strong style="color:#fff;">Human curates.</strong> Agent synthesizes.<br>編譯一次，持續複利<br><span style="color:#888;font-size:0.75rem;">你的閱讀品味 = wiki 的成長方向</span></div>
+              </div>
+
+              <div style="background:#fff200;padding:14px 16px;border:2px solid #000;box-shadow:4px 4px 0 #000;">
+                <div style="font-size:0.8rem;color:#000;font-weight:700;line-height:1.6;">LLM Wiki 解決的不是<br>「怎麼讓 agent 記更多」<br><br>而是「怎麼讓 agent <strong>不用每次<br>重新發現同樣的知識</strong>」</div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+     Slide 15 · Security Comparison
 ══════════════════════════════════════════════════ -->
         <section data-transition="slide">
           <span class="tag tag-p">SECURITY</span>
